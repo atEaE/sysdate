@@ -12,9 +12,22 @@ const (
 	SysDateFormat = "2006-01-02"
 )
 
-var sysDate *time.Time
+// IsRepeat
+// If IsRepeat is true, the date is not updated after 24:00 and the date set in GO_SYS_DATE is repeated
+var Repeat bool
+
+var (
+	sysDate *time.Time
+
+	initDateUTC time.Time
+	elapsedDay  int
+)
 
 func init() {
+	now := time.Now()
+	initDateUTC = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	elapsedDay = 0
+
 	v := os.Getenv(SysDateKey)
 	if v != "" {
 		t, err := time.Parse(SysDateFormat, v)
@@ -28,7 +41,27 @@ func init() {
 func Now() time.Time {
 	now := time.Now()
 	if sysDate != nil {
-		return time.Date(sysDate.Year(), sysDate.Month(), sysDate.Day(), now.Hour(), now.Minute(), now.Second(), now.Nanosecond(), now.Location())
+		day := sysDate.Day()
+		if !Repeat {
+			day = day + calcElapsedDay(initDateUTC, now.UTC())
+		}
+
+		return time.Date(
+			sysDate.Year(),
+			sysDate.Month(),
+			day,
+			now.Hour(),
+			now.Minute(),
+			now.Second(),
+			now.Nanosecond(),
+			now.Location(),
+		)
 	}
 	return now
+}
+
+// calcElapsedDay calculates the elapsed days from the initial date.
+func calcElapsedDay(initUTC, nowUTC time.Time) int {
+	elapsedDay = int(nowUTC.Sub(initUTC).Hours() / 24)
+	return elapsedDay
 }
