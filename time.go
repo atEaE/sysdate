@@ -44,7 +44,7 @@ func Now() time.Time {
 		sysnow := time.Date(sysDate.Year(), sysDate.Month(), sysDate.Day(), now.Hour(), now.Minute(), now.Second(), now.Nanosecond(), time.Local)
 		if !Repeat {
 			elapsedDay = calcElapsedDay(initDateUTC, now.UTC())
-			return sysnow.AddDate(0, 0, elapsedDay)
+			return sysnow.Add(time.Duration(elapsedDay*24) * time.Hour)
 		}
 		return sysnow
 	}
