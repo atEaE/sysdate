@@ -41,21 +41,12 @@ func init() {
 func Now() time.Time {
 	now := time.Now()
 	if sysDate != nil {
-		day := sysDate.Day()
+		sysnow := time.Date(sysDate.Year(), sysDate.Month(), sysDate.Day(), now.Hour(), now.Minute(), now.Second(), now.Nanosecond(), time.Local)
 		if !Repeat {
-			day = day + calcElapsedDay(initDateUTC, now.UTC())
+			elapsedDay = calcElapsedDay(initDateUTC, now.UTC())
+			return sysnow.AddDate(0, 0, elapsedDay)
 		}
-
-		return time.Date(
-			sysDate.Year(),
-			sysDate.Month(),
-			day,
-			now.Hour(),
-			now.Minute(),
-			now.Second(),
-			now.Nanosecond(),
-			now.Location(),
-		)
+		return sysnow
 	}
 	return now
 }
