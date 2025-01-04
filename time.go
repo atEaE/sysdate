@@ -24,7 +24,7 @@ var (
 )
 
 func init() {
-	now := time.Now()
+	now := time.Now().UTC()
 	initDateUTC = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
 	elapsedDay = 0
 
