@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   test:
-    name: Setup Go
+    name: Test Golang
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
