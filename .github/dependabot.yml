@@ -3,20 +3,22 @@ version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
+    target-branch: "develop"
     schedule:
       interval: "weekly"
       day: "sunday"
       time: "08:00"
       timezone: "Asia/Tokyo"
-    reviewers:
+    assignees:
       - "atEaE"
 
   - package-ecosystem: "gomod"
     directory: "/"
+    target-branch: "develop"
     schedule:
       interval: "weekly"
       day: "sunday"
       time: "08:00"
       timezone: "Asia/Tokyo"
-    reviewers:
+    assignees:
       - "atEaE"
